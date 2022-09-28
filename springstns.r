@@ -1,9 +1,12 @@
 library(cffdrs)
 library(data.table)
 
-fwiSpring <- function(input, init=data.frame(ffmc=85,dmc=6,dc=15,lat=55), batch=TRUE, out= "all", lat.adjust=TRUE, uppercase=TRUE)
+fwiSpring <- function(input, init=data.frame(ffmc=85,lat=55), batch=TRUE, out= "all", lat.adjust=TRUE, uppercase=TRUE)
 {
   SPRING_BUI <- 6
+  # supply default values because these indices aren't used
+  init$dmc <- 6
+  init$dc <- 15
   fwi.out1 <- data.table(fwi(input, init=init, batch=batch, out=out, lat.adjust=lat.adjust, uppercase=TRUE))
   fwi.out1 <- fwi.out1[, -c("DMC", "DC", "BUI")]
   fwi.out1[, FWI := Vectorize(cffdrs:::.fwiCalc)(ISI, SPRING_BUI)]
